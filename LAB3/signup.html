@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Signup Page</title>
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+    <form method="get" action="login.html">
+    
+    <h1>Welcome to Internet-Programming Movie Site</h1>
+    <a href="login.html">Login</a>
+    <a href="#">Signup</a>
+    
+    <br><br>
+
+    <div class="rectangle1">
+        <!-- User's name -->
+        <label for="name">Name:
+        <input type="text" id="name" name="name" autofocus></label>
+
+        <!-- Birthday input (date format) -->
+        <p>
+            <label for="birthday">Brithday: 
+            <input type="date" id="birthday" name="birthday">
+            (yyyy-mm-dd)
+        </label>
+        </p>
+
+        <!-- Sex selection using radio buttons -->
+        <p><label for="sex">Sex: </label>     
+            <label>Male <input type="radio" name="sex" value="male"> </label>
+            <label>Female <input type="radio" name="sex" value="female"> </label>
+        </p>
+
+        <!-- Grade selection using dropdown -->
+        <p>
+        <!-- Grade input using number + step -->
+        <label for="grade">Grade (1 to 4):</label>
+        <input type="number" id="grade" name="grade" min="1" max="4" step="1" required><br>
+        </p>
+
+        <!-- Username input-->
+        <p>
+        <label for="username">ID: </label>
+        <input type="text" id="username" name="username" autocomplete required><br>
+        </p>
+
+        <!-- Password input-->
+        <p><label for="password">Password: </label>
+        <input type="password" id="password" name="password" required><br>
+        </p>
+
+        <!-- Email input with placeholder example -->
+        <p><label for="email">E-mail: </label>
+        <input type="email" id="email" name="email" autocomplete placeholder="example@domain.com"><br>
+        </p>
+
+        <!-- Security question answer input -->
+        <p><label for="security-question">Security Question:</label>
+        <select id="security-question" name="security-question">
+            <option value="">Choose a security question to verify your identity later.
+            </option>
+            <option value="pet-name">What's your pet's name?</option>
+            <option value="birth-city">What city were you born in?</option>
+        </select><br>
+        </p>
+
+        <p><label for="answer">Answer:</label>
+        <input type="text" id="answer" name="answer"><br>
+        </p>
+
+        <button class="submitButton" type="submit">Signup</button>
+        <button class="resetButton" type="reset">Cancel</button> <br>
+    </div> 
+    </form>
+  </body>
+</html>
