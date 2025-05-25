@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Movie Site</title>
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="slide-wrapper">
+        <h1 class="slide-text">Movie Information Site</h1>
+      </div>
+    </header>
+
+    <nav class="navigation">
+      <a href="login.html" class="nav-link">Login</a>
+      <a href="signup.html" class="nav-link">Signup</a>
+    </nav>
+
+    <section class="intro">
+      <h2>This website introduces my favorite movies.</h2>
+      <ul class="site-list">
+        <li><a href="https://www.netflix.com" target="_blank" class="site-link">Netflix</a></li>
+        <li><a href="https://www.disneyplus.com" target="_blank" class="site-link">Disney Plus</a></li>
+        <li><a href="https://www.imdb.com" target="_blank" class="site-link">IMDB</a></li>
+      </ul>
+    </section>
+
+    <section class="search-sort">
+      <input type="text" id="search" placeholder="Search by keyword..." />
+      <button id="search-btn">Search</button>
+      <select id="sort">
+        <option value="">Sort By</option>
+        <option value="title">Title (A-Z)</option>
+        <option value="title-desc">Title (Z-A)</option>
+        <option value="rating">Rating (High-Low)</option>
+        <option value="rating-asc">Rating (Low-High)</option>
+      </select>
+    </section>
+
+    <section id="movie-list" class="main-content"></section>
+  </div>
+
+
+  <script>
+  let movies = [];
+  let filteredMovies = [];
+  let loadedCount = 0;
+  const pageSize = 6;
+
+  function loadMoreMovies() {
+    const container = document.getElementById("movie-list");
+    const nextMovies = filteredMovies.slice(loadedCount, loadedCount + pageSize);
+    nextMovies.forEach(movie => {
+      const div = document.createElement("div");
+      div.className = "movie-item";
+      div.innerHTML = `
+        <div class="img-container">
+          <img src="${movie.image}" alt="${movie.title}">
+          <div class="overlay">${movie.overview}</div>
+        </div>
+        <div class="movie-info">
+          <h3 class="movie-title">${movie.title}</h3>
+          <p class="movie-tagline">Rating: ${movie.vote_average}</p>
+          <p class="movie-tagline">Release: ${movie.release_date}</p>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+    loadedCount += nextMovies.length;
+  }
+
+  function applyFilter() {
+    const keyword = document.getElementById("search").value.toLowerCase();
+    const sort = document.getElementById("sort").value;
+    filteredMovies = movies.filter(m => m.title.toLowerCase().includes(keyword));
+
+    switch (sort) {
+      case "title": filteredMovies.sort((a, b) => a.title.localeCompare(b.title)); break;
+      case "title-desc": filteredMovies.sort((a, b) => b.title.localeCompare(a.title)); break;
+      case "rating": filteredMovies.sort((a, b) => b.vote_average - a.vote_average); break;
+      case "rating-asc": filteredMovies.sort((a, b) => a.vote_average - b.vote_average); break;
+    }
+
+    document.getElementById("movie-list").innerHTML = "";
+    loadedCount = 0;
+    loadMoreMovies();
+  }
+
+  fetch("product.json")
+    .then(res => res.json())
+    .then(data => {
+      movies = data;
+      filteredMovies = data;
+      loadMoreMovies();
+    })
+    .catch(err => {
+      console.error("Error loading JSON:", err);
+    });
+
+  document.getElementById("search-btn").addEventListener("click", applyFilter);
+  document.getElementById("sort").addEventListener("change", applyFilter);
+
+  window.addEventListener("scroll", () => {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 200 &&
+      loadedCount < filteredMovies.length
+    ) {
+      loadMoreMovies();
+    }
+  });
+</script>
+
+</body>
+</html>
